@@ -1,0 +1,68 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "hatch-showcase"
+description = 'A project showcasing features and plugins for Hatch'
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+keywords = [
+  "hatch",
+]
+authors = [
+  { name = "Ofek Lev", email = "oss@ofek.dev" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = [
+  "click",
+]
+dynamic = ["version"]
+
+[project.urls]
+Donate = "https://github.com/sponsors/ofek"
+History = "https://github.com/ofek/hatch-showcase/blob/master/HISTORY.md"
+Issues = "https://github.com/ofek/hatch-showcase/issues"
+Source = "https://github.com/ofek/hatch-showcase"
+
+[project.scripts]
+hatch-showcase = "hatch_showcase.cli:hatch_showcase"
+
+[tool.hatch.version]
+path = "hatch_showcase/__about__.py"
+
+[tool.hatch.build]
+packages = ["hatch_showcase"]
+# https://github.com/ofek/hatch-mypyc#options
+dev-mode-dirs = ["."]
+
+[tool.hatch.build.targets.sdist]
+include = [
+  "/LICENSE.txt",
+  "/tests",
+]
+
+[tool.hatch.build.targets.wheel.hooks.mypyc]
+dependencies = ["hatch-mypyc>=0.0.10"]
+include = ["/hatch_showcase"]
+
+[tool.coverage.run]
+branch = true
+parallel = true
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
