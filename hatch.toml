@@ -5,12 +5,16 @@ dependencies = [
   "pytest-cov",
   "pytest-mock",
 ]
+[envs.default.env-vars]
+# Necessary for coverage
+HATCH_BUILD_CLEAN_HOOKS_AFTER = "true"
 [envs.default.scripts]
-cov = "pytest --cov-report=term-missing --cov-config=pyproject.toml --cov=hatch_showcase --cov=tests"
+cov = "pytest --cov-report=term-missing --cov-config=pyproject.toml --cov=src/hatch_showcase --cov=tests"
 no-cov = "cov --no-cov"
 
 [envs.test]
 type = "container"
+dev-mode = false
 
 [[envs.test.matrix]]
 python = ["38", "39", "310"]
@@ -26,7 +30,7 @@ dependencies = [
   "mypy==0.930",
 ]
 [envs.lint.scripts]
-typing = "mypy --install-types --non-interactive hatch_showcase tests"
+typing = "mypy --install-types --non-interactive src/hatch_showcase tests"
 style = [
   "flake8 .",
   "black --check --diff .",

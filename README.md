@@ -13,6 +13,8 @@ This project is meant to showcase various features and plugins for [Hatch](https
 **Table of Contents**
 
 - [Installation](#installation)
+- [Environments](#environments)
+- [Build](#build)
 - [License](#license)
 
 ## Installation
@@ -20,6 +22,18 @@ This project is meant to showcase various features and plugins for [Hatch](https
 ```console
 pip install hatch-showcase
 ```
+
+## Environments
+
+- Defined neatly in a standalone [`hatch.toml`](https://ofek.dev/hatch/latest/intro/#configuration)
+- The `test` matrix uses the [hatch-containers](https://github.com/ofek/hatch-containers) plugin to run each environment inside Docker containers; usage can be seen in the [test](.github/workflows/test.yml) GitHub workflow
+
+## Build
+
+- Wheels use the [hatch-mypyc](https://github.com/ofek/hatch-mypyc) build hook plugin to first compile all code with [Mypyc](https://github.com/mypyc/mypyc)
+- The [build](.github/workflows/build.yml) GitHub workflow shows:
+  - how to use [cibuildwheel](https://github.com/pypa/cibuildwheel) to distribute binary wheels for every platform
+  - how to disable build hooks in order to build pure Python wheels
 
 ## License
 

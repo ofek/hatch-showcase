@@ -37,5 +37,27 @@ jobs:
     - name: Install Hatch
       run: pip install --upgrade hatch
 
-    - name: Run tests
+    - if: matrix.python-version == '3.9' && runner.os == 'Linux'
+      name: Lint
+      run: hatch run lint:all
+
+    - name: Run tests and track code coverage
       run: hatch run cov
+
+  run-container-matrix:
+    name: Container matrix on Linux
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.10'
+
+    - name: Install Hatch
+      run: pip install --upgrade hatch hatch-containers
+
+    - name: Run tests in container matrix
+      run: hatch run test:no-cov

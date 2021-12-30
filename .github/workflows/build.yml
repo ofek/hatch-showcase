@@ -18,6 +18,8 @@ env:
     "from hatch_showcase.fib import fibonacci;
     assert fibonacci(32) == 2178309
     "
+  CIBW_SKIP: >
+    pp*
 
 jobs:
   binary-wheels-standard:
@@ -26,7 +28,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-20.04, windows-2022, macos-10.15]
+        os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
     - uses: actions/checkout@v2
@@ -34,7 +36,7 @@ jobs:
     - name: Build wheels
       uses: pypa/cibuildwheel@v2.3.0
       env:
-        CIBW_ARCHS_MACOS: x86_64 arm64
+        CIBW_ARCHS_MACOS: x86_64
 
     - uses: actions/upload-artifact@v2
       with:
@@ -65,7 +67,8 @@ jobs:
 
   binary-wheels-arm:
     name: Build Linux wheels for ARM
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
+    # Very slow, no need to run on PRs
     if: >
       (github.event_name == 'push' && github.ref == 'refs/heads/master')
       ||
