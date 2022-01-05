@@ -2,6 +2,8 @@ name: build
 
 on:
   push:
+    tags:
+    - v*
     branches:
     - master
   pull_request:
@@ -70,9 +72,9 @@ jobs:
     runs-on: ubuntu-latest
     # Very slow, no need to run on PRs
     if: >
-      (github.event_name == 'push' && github.ref == 'refs/heads/master')
-      ||
-      (github.event_name == 'create' && github.event.ref_type == 'tag')
+      github.event_name == 'push'
+      &&
+      (github.ref == 'refs/heads/master' || startsWith(github.event.ref, 'refs/tags'))
 
     steps:
     - uses: actions/checkout@v2
@@ -100,7 +102,7 @@ jobs:
     - pure-python-wheel-and-sdist
     - binary-wheels-arm
     runs-on: ubuntu-latest
-    if: github.event_name == 'create' && github.event.ref_type == 'tag'
+    if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
 
     steps:
     - uses: actions/download-artifact@v2
