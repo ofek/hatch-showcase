@@ -17,7 +17,7 @@ type = "container"
 dev-mode = false
 
 [[envs.test.matrix]]
-python = ["38", "39", "310"]
+python = ["37", "38", "39", "310"]
 
 [envs.lint]
 skip-install = true
