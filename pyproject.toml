@@ -52,6 +52,9 @@ packages = ["src/hatch_showcase"]
 
 [tool.hatch.build.targets.wheel.hooks.mypyc]
 dependencies = ["hatch-mypyc>=0.5.0", "click"]
+mypy-args = [
+  "--no-warn-unused-ignores",
+]
 
 [tool.black]
 include = '\.pyi?$'
