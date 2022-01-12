@@ -51,13 +51,13 @@ exclude = [
 packages = ["src/hatch_showcase"]
 
 [tool.hatch.build.targets.wheel.hooks.mypyc]
-dependencies = ["hatch-mypyc>=0.4"]
+dependencies = ["hatch-mypyc>=0.5.0", "click"]
 
 [tool.black]
 include = '\.pyi?$'
 line-length = 120
 skip-string-normalization = true
-target-version = ["py38"]
+target-version = ["py37"]
 
 [tool.isort]
 default_section = "THIRDPARTY"

@@ -8,6 +8,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## Unreleased
 
+***Added:***
+
+- Bump the version of `hatch-mypyc`
+
 ## 0.1 - 2022-01-04
 
 This is the initial public release.
