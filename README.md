@@ -13,6 +13,7 @@ This project is meant to showcase various features and plugins for [Hatch](https
 **Table of Contents**
 
 - [Installation](#installation)
+- [Version source](#version-source)
 - [Environments](#environments)
 - [Build](#build)
 - [License](#license)
@@ -23,6 +24,10 @@ This project is meant to showcase various features and plugins for [Hatch](https
 pip install hatch-showcase
 ```
 
+## Version source
+
+- The [hatch-vcs](https://github.com/ofek/hatch-vcs) version source plugin determines the project version using Git tags
+
 ## Environments
 
 - Defined neatly in a standalone [`hatch.toml`](https://ofek.dev/hatch/latest/intro/#configuration)
@@ -30,10 +35,9 @@ pip install hatch-showcase
 
 ## Build
 
+- All build targets use the [hatch-vcs](https://github.com/ofek/hatch-vcs) build hook plugin to ship a `_version.py` file so the version can be used at runtime
 - Wheels use the [hatch-mypyc](https://github.com/ofek/hatch-mypyc) build hook plugin to first compile all code with [Mypyc](https://github.com/mypyc/mypyc)
-- The [build](.github/workflows/build.yml) GitHub workflow shows:
-  - how to use [cibuildwheel](https://github.com/pypa/cibuildwheel) to distribute binary wheels for every platform
-  - how to disable build hooks in order to build pure Python wheels
+- The [build](.github/workflows/build.yml) GitHub workflow shows how to use [cibuildwheel](https://github.com/pypa/cibuildwheel) to distribute binary wheels for every platform
 
 ## License
 
