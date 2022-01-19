@@ -20,3 +20,6 @@ __pycache__/
 
 # Root files
 /.coverage*
+
+# Version file
+/src/hatch_showcase/_version.py

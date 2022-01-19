@@ -8,6 +8,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## Unreleased
 
+***Added:***
+
+- Use `hatch-vcs`
+- Bump the version of `hatch-mypyc`
+
 ## 0.2.0 - 2022-01-12
 
 ***Added:***
