@@ -17,6 +17,6 @@ def hatch_showcase():
 
 
 @click.argument('n', type=int)
-@hatch_showcase.command()  # type: ignore
+@hatch_showcase.command()
 def fib(n: int):
     click.echo(fibonacci(n))
