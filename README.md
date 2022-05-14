@@ -8,7 +8,7 @@
 
 -----
 
-This project is meant to showcase various features and plugins for [Hatch](https://github.com/ofek/hatch) as well as providing a place to test experimental functionality.
+This project is meant to showcase various features and plugins for [Hatch](https://github.com/pypa/hatch) as well as providing a place to test experimental functionality.
 
 **Table of Contents**
 
@@ -30,7 +30,7 @@ pip install hatch-showcase
 
 ## Environments
 
-- Defined neatly in a standalone [`hatch.toml`](https://ofek.dev/hatch/latest/intro/#configuration)
+- Defined neatly in a standalone [`hatch.toml`](https://hatch.pypa.io/latest/intro/#configuration)
 - The `test` matrix uses the [hatch-containers](https://github.com/ofek/hatch-containers) plugin to run each environment inside Docker containers; usage can be seen in the [test](.github/workflows/test.yml) GitHub workflow
 
 ## Build
