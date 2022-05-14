@@ -7,7 +7,7 @@ name = "hatch-showcase"
 description = 'A project showcasing features and plugins for Hatch'
 readme = "README.md"
 requires-python = ">=3.7"
-license = "MIT"
+license = { text = "MIT" }
 keywords = [
   "hatch",
 ]
