@@ -52,7 +52,7 @@ exclude = [
 
 [tool.hatch.build.targets.wheel.hooks.mypyc]
 enable-by-default = false
-dependencies = ["hatch-mypyc>=0.7.0"]
+dependencies = ["hatch-mypyc>=0.9.1"]
 require-runtime-dependencies = true
 mypy-args = [
   "--no-warn-unused-ignores",
