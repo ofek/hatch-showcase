@@ -52,10 +52,20 @@ exclude = [
 
 [tool.hatch.build.targets.wheel.hooks.mypyc]
 enable-by-default = false
-dependencies = ["hatch-mypyc>=0.7.0", "click"]
+dependencies = ["hatch-mypyc>=0.7.0"]
+require-runtime-dependencies = true
 mypy-args = [
   "--no-warn-unused-ignores",
 ]
+
+[tool.mypy]
+disallow_untyped_defs = false
+follow_imports = "normal"
+ignore_missing_imports = true
+pretty = true
+show_column_numbers = true
+warn_no_return = false
+warn_unused_ignores = true
 
 [tool.black]
 include = '\.pyi?$'
