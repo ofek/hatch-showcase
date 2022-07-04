@@ -1,5 +1,5 @@
 [build-system]
-requires = ["hatchling<1.4.0", "hatch-vcs"]
+requires = ["hatchling>=1.4.0", "hatch-vcs", "mypy @ https://github.com/python/mypy/archive/refs/heads/master.zip"]
 build-backend = "hatchling.build"
 
 [project]
@@ -42,17 +42,18 @@ hatch-showcase = "hatch_showcase.cli:hatch_showcase"
 [tool.hatch.version]
 source = "vcs"
 
-[tool.hatch.build.hooks.vcs]
-version-file = "src/hatch_showcase/_version.py"
-
 [tool.hatch.build.targets.sdist]
 exclude = [
   "/.github",
 ]
 
+[tool.hatch.build.hooks.vcs]
+version-file = "src/hatch_showcase/_version.py"
+
+[tool.hatch.build.targets.wheel.hooks.vcs]
 [tool.hatch.build.targets.wheel.hooks.mypyc]
 enable-by-default = false
-dependencies = ["hatch-mypyc==0.9.1"]
+dependencies = ["hatch-mypyc>=0.11.1"]
 require-runtime-dependencies = true
 mypy-args = [
   "--no-warn-unused-ignores",
