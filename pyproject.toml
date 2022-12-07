@@ -4,6 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "hatch-showcase"
+dynamic = ["version"]
 description = 'A project showcasing features and plugins for Hatch'
 readme = "README.md"
 requires-python = ">=3.7"
@@ -22,13 +23,13 @@ classifiers = [
   "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
 ]
 dependencies = [
   "click>=8.0.3",
 ]
-dynamic = ["version"]
 
 [project.urls]
 Donate = "https://github.com/sponsors/ofek"
@@ -68,26 +69,69 @@ warn_no_return = false
 warn_unused_ignores = true
 
 [tool.black]
-include = '\.pyi?$'
+target-version = ["py37"]
 line-length = 120
 skip-string-normalization = true
-target-version = ["py37"]
 
-[tool.isort]
-default_section = "THIRDPARTY"
-force_grid_wrap = 0
-include_trailing_comma = true
-known_first_party = ["hatch_showcase"]
-line_length = 120
-multi_line_output = 3
-use_parentheses = true
+[tool.ruff]
+target-version = "py37"
+line-length = 120
+select = [
+  "A",
+  "B",
+  "C",
+  "E",
+  "F",
+  "FBT",
+  "I",
+  "N",
+  "Q",
+  "RUF",
+  "S",
+  "T",
+  "UP",
+  "W",
+  "YTT",
+]
+ignore = [
+  # Allow non-abstract empty methods in abstract base classes
+  "B027",
+  # Ignore McCabe complexity
+  "C901",
+  # Allow boolean positional values in function calls, like `dict.get(... True)`
+  "FBT003",
+  # Ignore checks for possible passwords
+  "S105", "S106", "S107",
+]
+unfixable = [
+  # Don't touch unused imports
+  "F401",
+]
+
+[tool.ruff.isort]
+known-first-party = ["hatch_showcase"]
+
+[tool.ruff.flake8-quotes]
+inline-quotes = "single"
+
+[tool.ruff.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[tool.ruff.per-file-ignores]
+# Tests can use relative imports and assertions
+"tests/**/*" = ["I252", "S101"]
 
 [tool.coverage.run]
+source_pkgs = ["hatch_showcase", "tests"]
 branch = true
 parallel = true
 omit = [
   "src/hatch_showcase/__main__.py",
 ]
+
+[tool.coverage.paths]
+hatch_showcase = ["src/hatch_showcase", "*/hatch-showcase/src/hatch_showcase"]
+tests = ["tests", "*/hatch-showcase/tests"]
 
 [tool.coverage.report]
 exclude_lines = [

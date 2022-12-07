@@ -6,6 +6,7 @@ import click
 from hatch_showcase._version import version
 from hatch_showcase.fib import fibonacci
 
+
 # NOTE: The group/command decorators must come last to avoid the following issue at runtime:
 # https://github.com/pallets/click/issues/1199
 
