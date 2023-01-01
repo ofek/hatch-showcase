@@ -53,7 +53,7 @@ exclude = [
 
 [tool.hatch.build.targets.wheel.hooks.mypyc]
 enable-by-default = false
-dependencies = ["hatch-mypyc"]
+dependencies = ["hatch-mypyc>=0.14.1"]
 require-runtime-dependencies = true
 mypy-args = [
   "--no-warn-unused-ignores",
@@ -89,6 +89,7 @@ select = [
   "RUF",
   "S",
   "T",
+  "TID",
   "UP",
   "W",
   "YTT",
@@ -119,7 +120,7 @@ ban-relative-imports = "all"
 
 [tool.ruff.per-file-ignores]
 # Tests can use relative imports and assertions
-"tests/**/*" = ["I252", "S101"]
+"tests/**/*" = ["TID252", "S101"]
 
 [tool.coverage.run]
 source_pkgs = ["hatch_showcase", "tests"]
