@@ -15,6 +15,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
+  CIBW_BUILD_FRONTEND: build
   CIBW_ENVIRONMENT_PASS_LINUX: >
     HATCH_BUILD_HOOKS_ENABLE
   CIBW_TEST_COMMAND: >
