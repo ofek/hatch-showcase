@@ -145,21 +145,20 @@ jobs:
     env:
       CARGO: cargo
       CARGO_BUILD_TARGET: ${{ matrix.job.target }}
+      PYAPP_REPO: pyapp
+      PYAPP_VERSION: v0.4.0
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
 
+    - name: Clone PyApp
+      run: git clone --depth 1 --branch $PYAPP_VERSION https://github.com/ofek/pyapp $PYAPP_REPO
+
     - name: Set up Python ${{ env.STABLE_PYTHON_VERSION }}
       uses: actions/setup-python@v4
       with:
         python-version: ${{ env.STABLE_PYTHON_VERSION }}
-
-    - name: Set up system
-      run: |
-        case ${{ matrix.job.target }} in
-          aarch64-unknown-linux-gnu) sudo apt update && sudo apt install -y gcc-aarch64-linux-gnu ;;
-        esac
 
     - name: Install Hatch
       run: pip install -U hatch
@@ -175,9 +174,15 @@ jobs:
       with:
         tool: cross
 
-    - name: Overwrite build command if cross compiling
+    - name: Configure cross compiling
       if: matrix.job.cross
       run: echo "CARGO=cross" >> $GITHUB_ENV
+
+    - name: See path
+      if: matrix.job.cross
+      run: |-
+        which cross
+        which cross-util
 
     - name: Show toolchain information
       run: |-
@@ -189,7 +194,7 @@ jobs:
         hatch --version
 
     - name: Build
-      run: hatch build --target app
+      run: hatch -v build --target app
 
     - uses: actions/upload-artifact@v3
       with:
