@@ -15,6 +15,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
+  STABLE_PYTHON_VERSION: "3.11"
   CIBW_BUILD_FRONTEND: build
   CIBW_ENVIRONMENT_PASS_LINUX: >
     HATCH_BUILD_HOOKS_ENABLE
@@ -148,6 +149,11 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
+
+    - name: Set up Python ${{ env.STABLE_PYTHON_VERSION }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.STABLE_PYTHON_VERSION }}
 
     - name: Set up system
       run: |
