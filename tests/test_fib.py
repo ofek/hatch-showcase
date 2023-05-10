@@ -5,4 +5,4 @@ from hatch_showcase.fib import fibonacci
 
 
 def test():
-    assert fibonacci(32) == 2178309
+    assert fibonacci(32) == 2178309  # noqa: PLR2004
