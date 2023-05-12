@@ -37,7 +37,9 @@ pip install hatch-showcase
 
 - All build targets use the [hatch-vcs](https://github.com/ofek/hatch-vcs) build hook plugin to ship a `_version.py` file so the version can be used at runtime
 - Wheels use the [hatch-mypyc](https://github.com/ofek/hatch-mypyc) build hook plugin to first compile all code with [Mypyc](https://github.com/mypyc/mypyc)
-- The [build](.github/workflows/build.yml) GitHub workflow shows how to use [cibuildwheel](https://github.com/pypa/cibuildwheel) to distribute binary wheels for every platform
+- The [build](.github/workflows/build.yml) GitHub workflow shows how to:
+  - use [cibuildwheel](https://github.com/pypa/cibuildwheel) to distribute binary wheels for every platform
+  - use the [app](https://hatch.pypa.io/latest/plugins/builder/app/) build target to build standalone distributions for every platform
 
 ## License
 
