@@ -14,7 +14,12 @@ concurrency:
   group: build-${{ github.head_ref }}
   cancel-in-progress: true
 
+defaults:
+  run:
+    shell: bash
+
 env:
+  STABLE_PYTHON_VERSION: "3.11"
   CIBW_BUILD_FRONTEND: build
   CIBW_ENVIRONMENT_PASS_LINUX: >
     HATCH_BUILD_HOOKS_ENABLE
@@ -107,12 +112,98 @@ jobs:
         path: wheelhouse/*.whl
         if-no-files-found: error
 
+  build-binaries:
+    name: ${{ matrix.job.target }} (${{ matrix.job.os }})
+    runs-on: ${{ matrix.job.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        job:
+        # Linux
+        - target: x86_64-unknown-linux-gnu
+          os: ubuntu-22.04
+          cross: true
+        - target: x86_64-unknown-linux-musl
+          os: ubuntu-22.04
+          cross: true
+        - target: aarch64-unknown-linux-gnu
+          os: ubuntu-22.04
+          cross: true
+        - target: i686-unknown-linux-gnu
+          os: ubuntu-22.04
+          cross: true
+        # Windows
+        - target: x86_64-pc-windows-msvc
+          os: windows-2022
+        - target: i686-pc-windows-msvc
+          os: windows-2022
+        # macOS
+        - target: aarch64-apple-darwin
+          os: macos-12
+        - target: x86_64-apple-darwin
+          os: macos-12
+
+    env:
+      CARGO: cargo
+      CARGO_BUILD_TARGET: ${{ matrix.job.target }}
+      PYAPP_REPO: pyapp
+      PYAPP_VERSION: v0.5.0
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Clone PyApp
+      run: git clone --depth 1 --branch $PYAPP_VERSION https://github.com/ofek/pyapp $PYAPP_REPO
+
+    - name: Set up Python ${{ env.STABLE_PYTHON_VERSION }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.STABLE_PYTHON_VERSION }}
+
+    - name: Install Hatch
+      run: pip install -U hatch
+
+    - name: Install Rust toolchain
+      uses: dtolnay/rust-toolchain@stable
+      with:
+        targets: ${{ matrix.job.target }}
+
+    - name: Set up cross compiling
+      if: matrix.job.cross
+      uses: taiki-e/install-action@v2
+      with:
+        tool: cross
+
+    - name: Configure cross compiling
+      if: matrix.job.cross
+      run: echo "CARGO=cross" >> $GITHUB_ENV
+
+    - name: Show toolchain information
+      run: |-
+        rustup toolchain list
+        rustup default
+        rustup -V
+        rustc -V
+        cargo -V
+        hatch --version
+
+    - name: Build
+      run: hatch -v build --target app
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: binaries
+        path: dist/app/*
+        if-no-files-found: error
+
   publish:
     name: Publish release
     needs:
     - binary-wheels-standard
     - pure-python-wheel-and-sdist
     - binary-wheels-arm
+    - build-binaries
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
 
@@ -128,3 +219,13 @@ jobs:
         skip_existing: true
         user: __token__
         password: ${{ secrets.PYPI_API_TOKEN }}
+
+    - uses: actions/download-artifact@v3
+      with:
+        name: binaries
+        path: bin
+
+    - name: Add binary assets to current release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: bin/*
