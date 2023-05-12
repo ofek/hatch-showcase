@@ -2,6 +2,8 @@ name: build
 
 on:
   push:
+    tags:
+    - v*
     branches:
     - master
   pull_request:
@@ -9,7 +11,7 @@ on:
     - master
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
+  group: build-${{ github.head_ref }}
   cancel-in-progress: true
 
 defaults:
@@ -191,6 +193,39 @@ jobs:
 
     - uses: actions/upload-artifact@v3
       with:
-        name: standalone
+        name: binaries
         path: dist/app/*
         if-no-files-found: error
+
+  publish:
+    name: Publish release
+    needs:
+    - binary-wheels-standard
+    - pure-python-wheel-and-sdist
+    - binary-wheels-arm
+    - build-binaries
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
+
+    steps:
+    - uses: actions/download-artifact@v3
+      with:
+        name: artifacts
+        path: dist
+
+    - name: Push build artifacts to PyPI
+      uses: pypa/gh-action-pypi-publish@v1.6.4
+      with:
+        skip_existing: true
+        user: __token__
+        password: ${{ secrets.PYPI_API_TOKEN }}
+
+    - uses: actions/download-artifact@v3
+      with:
+        name: binaries
+        path: bin
+
+    - name: Add binary assets to current release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: bin/*
